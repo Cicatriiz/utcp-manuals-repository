@@ -4,7 +4,7 @@ A comprehensive collection of Universal Tool Calling Protocol (UTCP) manual JSON
 
 ## What is UTCP?
 
-The Universal Tool Calling Protocol (UTCP) is a standardized format for defining how AI agents and applications can interact with external tools and APIs. Each UTCP manual is a JSON file that describes:
+The Universal Tool Calling Protocol (UTCP) is a standardized format for defining how AI agents and applications can interact with external tools and APIs. For more details, see the [official UTCP specification](https://github.com/universal-tool-calling-protocol/utcp-specification). Each UTCP manual is a JSON file that describes:
 
 - Tool functions and their parameters
 - Input/output schemas
@@ -288,4 +288,3 @@ For issues with specific UTCP manuals or suggestions for new APIs to include, pl
 **Total APIs**: 11 services across 4 categories  
 **Last Updated**: July 2025  
 **UTCP Version**: 1.0.0
-
