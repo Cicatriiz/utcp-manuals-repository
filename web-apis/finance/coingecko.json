@@ -1,0 +1,358 @@
+{
+  "utcp_version": "1.0.0",
+  "manual_version": "1.0.0",
+  "tools": [
+    {
+      "name": "get_coin_price",
+      "description": "Get current price of cryptocurrencies in any supported currency",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "string",
+            "description": "Comma-separated list of coin IDs (e.g., 'bitcoin,ethereum,cardano')"
+          },
+          "vs_currencies": {
+            "type": "string",
+            "description": "Comma-separated list of target currencies (e.g., 'usd,eur,btc')",
+            "default": "usd"
+          },
+          "include_market_cap": {
+            "type": "boolean",
+            "description": "Include market cap in response",
+            "default": false
+          },
+          "include_24hr_vol": {
+            "type": "boolean",
+            "description": "Include 24hr volume in response",
+            "default": false
+          },
+          "include_24hr_change": {
+            "type": "boolean",
+            "description": "Include 24hr price change percentage in response",
+            "default": false
+          },
+          "include_last_updated_at": {
+            "type": "boolean",
+            "description": "Include last updated timestamp in response",
+            "default": false
+          }
+        },
+        "required": ["ids"]
+      },
+      "outputs": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      },
+      "tags": ["cryptocurrency", "price", "finance", "trading", "market"],
+      "average_response_size": 500,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api.coingecko.com/api/v3/simple/price",
+        "http_method": "GET",
+        "query_params": {
+          "ids": "{ids}",
+          "vs_currencies": "{vs_currencies}",
+          "include_market_cap": "{include_market_cap}",
+          "include_24hr_vol": "{include_24hr_vol}",
+          "include_24hr_change": "{include_24hr_change}",
+          "include_last_updated_at": "{include_last_updated_at}"
+        }
+      }
+    },
+    {
+      "name": "get_coin_details",
+      "description": "Get detailed information about a specific cryptocurrency",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Coin ID (e.g., 'bitcoin', 'ethereum')"
+          },
+          "localization": {
+            "type": "boolean",
+            "description": "Include localized language fields",
+            "default": true
+          },
+          "tickers": {
+            "type": "boolean",
+            "description": "Include ticker data",
+            "default": true
+          },
+          "market_data": {
+            "type": "boolean",
+            "description": "Include market data",
+            "default": true
+          },
+          "community_data": {
+            "type": "boolean",
+            "description": "Include community data",
+            "default": true
+          },
+          "developer_data": {
+            "type": "boolean",
+            "description": "Include developer data",
+            "default": true
+          },
+          "sparkline": {
+            "type": "boolean",
+            "description": "Include sparkline 7 days price",
+            "default": false
+          }
+        },
+        "required": ["id"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "symbol": {"type": "string"},
+          "name": {"type": "string"},
+          "description": {
+            "type": "object",
+            "additionalProperties": {"type": "string"}
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "homepage": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "blockchain_site": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "official_forum_url": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "chat_url": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "announcement_url": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "twitter_screen_name": {"type": "string"},
+              "facebook_username": {"type": "string"},
+              "bitcointalk_thread_identifier": {"type": "integer"},
+              "telegram_channel_identifier": {"type": "string"},
+              "subreddit_url": {"type": "string"},
+              "repos_url": {
+                "type": "object",
+                "properties": {
+                  "github": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                  },
+                  "bitbucket": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "image": {
+            "type": "object",
+            "properties": {
+              "thumb": {"type": "string"},
+              "small": {"type": "string"},
+              "large": {"type": "string"}
+            }
+          },
+          "country_origin": {"type": "string"},
+          "genesis_date": {"type": "string"},
+          "sentiment_votes_up_percentage": {"type": "number"},
+          "sentiment_votes_down_percentage": {"type": "number"},
+          "market_cap_rank": {"type": "integer"},
+          "coingecko_rank": {"type": "integer"},
+          "coingecko_score": {"type": "number"},
+          "developer_score": {"type": "number"},
+          "community_score": {"type": "number"},
+          "liquidity_score": {"type": "number"},
+          "public_interest_score": {"type": "number"},
+          "market_data": {
+            "type": "object",
+            "properties": {
+              "current_price": {
+                "type": "object",
+                "additionalProperties": {"type": "number"}
+              },
+              "market_cap": {
+                "type": "object",
+                "additionalProperties": {"type": "number"}
+              },
+              "total_volume": {
+                "type": "object",
+                "additionalProperties": {"type": "number"}
+              },
+              "high_24h": {
+                "type": "object",
+                "additionalProperties": {"type": "number"}
+              },
+              "low_24h": {
+                "type": "object",
+                "additionalProperties": {"type": "number"}
+              },
+              "price_change_24h": {"type": "number"},
+              "price_change_percentage_24h": {"type": "number"},
+              "price_change_percentage_7d": {"type": "number"},
+              "price_change_percentage_14d": {"type": "number"},
+              "price_change_percentage_30d": {"type": "number"},
+              "price_change_percentage_60d": {"type": "number"},
+              "price_change_percentage_200d": {"type": "number"},
+              "price_change_percentage_1y": {"type": "number"},
+              "market_cap_change_24h": {"type": "number"},
+              "market_cap_change_percentage_24h": {"type": "number"},
+              "total_supply": {"type": "number"},
+              "max_supply": {"type": "number"},
+              "circulating_supply": {"type": "number"},
+              "last_updated": {"type": "string"}
+            }
+          }
+        }
+      },
+      "tags": ["cryptocurrency", "details", "finance", "market", "analysis"],
+      "average_response_size": 25000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api.coingecko.com/api/v3/coins/{id}",
+        "http_method": "GET",
+        "query_params": {
+          "localization": "{localization}",
+          "tickers": "{tickers}",
+          "market_data": "{market_data}",
+          "community_data": "{community_data}",
+          "developer_data": "{developer_data}",
+          "sparkline": "{sparkline}"
+        }
+      }
+    },
+    {
+      "name": "get_trending_coins",
+      "description": "Get trending search coins on CoinGecko in the last 24 hours",
+      "inputs": {
+        "type": "object",
+        "properties": {}
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "coins": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "item": {
+                  "type": "object",
+                  "properties": {
+                    "id": {"type": "string"},
+                    "coin_id": {"type": "integer"},
+                    "name": {"type": "string"},
+                    "symbol": {"type": "string"},
+                    "market_cap_rank": {"type": "integer"},
+                    "thumb": {"type": "string"},
+                    "small": {"type": "string"},
+                    "large": {"type": "string"},
+                    "slug": {"type": "string"},
+                    "price_btc": {"type": "number"},
+                    "score": {"type": "integer"}
+                  }
+                }
+              }
+            }
+          },
+          "nfts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "name": {"type": "string"},
+                "symbol": {"type": "string"},
+                "thumb": {"type": "string"},
+                "nft_contract_id": {"type": "integer"},
+                "native_currency_symbol": {"type": "string"},
+                "floor_price_in_native_currency": {"type": "number"},
+                "floor_price_24h_percentage_change": {"type": "number"}
+              }
+            }
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "integer"},
+                "name": {"type": "string"},
+                "market_cap_1h_change": {"type": "number"},
+                "slug": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "tags": ["cryptocurrency", "trending", "popular", "search", "discovery"],
+      "average_response_size": 8000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api.coingecko.com/api/v3/search/trending",
+        "http_method": "GET"
+      }
+    },
+    {
+      "name": "get_global_crypto_data",
+      "description": "Get global cryptocurrency market data",
+      "inputs": {
+        "type": "object",
+        "properties": {}
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "active_cryptocurrencies": {"type": "integer"},
+              "upcoming_icos": {"type": "integer"},
+              "ongoing_icos": {"type": "integer"},
+              "ended_icos": {"type": "integer"},
+              "markets": {"type": "integer"},
+              "total_market_cap": {
+                "type": "object",
+                "additionalProperties": {"type": "number"}
+              },
+              "total_volume": {
+                "type": "object",
+                "additionalProperties": {"type": "number"}
+              },
+              "market_cap_percentage": {
+                "type": "object",
+                "additionalProperties": {"type": "number"}
+              },
+              "market_cap_change_percentage_24h_usd": {"type": "number"},
+              "updated_at": {"type": "integer"}
+            }
+          }
+        }
+      },
+      "tags": ["cryptocurrency", "global", "market", "statistics", "overview"],
+      "average_response_size": 2000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api.coingecko.com/api/v3/global",
+        "http_method": "GET"
+      }
+    }
+  ]
+}
+

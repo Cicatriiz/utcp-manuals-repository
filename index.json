@@ -1,0 +1,141 @@
+{
+  "repository": {
+    "name": "UTCP Manuals Repository",
+    "description": "A comprehensive collection of Universal Tool Calling Protocol (UTCP) manual JSON files for various useful APIs, services, and tools",
+    "version": "1.0.0",
+    "utcp_version": "1.0.0",
+    "total_manuals": 13,
+    "categories": 4,
+    "last_updated": "2025-07-26"
+  },
+  "categories": {
+    "web-apis": {
+      "name": "Web APIs",
+      "description": "Public web services and APIs",
+      "manuals": [
+        {
+          "name": "OpenWeatherMap",
+          "file": "web-apis/weather/openweathermap.json",
+          "description": "Weather data and forecasts",
+          "auth_required": true,
+          "tags": ["weather", "forecast", "climate"]
+        },
+        {
+          "name": "GitHub",
+          "file": "web-apis/social-media/github.json", 
+          "description": "GitHub repositories and user data",
+          "auth_required": false,
+          "tags": ["github", "repositories", "developers"]
+        },
+        {
+          "name": "NewsAPI",
+          "file": "web-apis/news/newsapi.json",
+          "description": "News articles from 150,000+ sources",
+          "auth_required": true,
+          "tags": ["news", "articles", "media"]
+        },
+        {
+          "name": "CoinGecko",
+          "file": "web-apis/finance/coingecko.json",
+          "description": "Cryptocurrency market data",
+          "auth_required": false,
+          "tags": ["cryptocurrency", "finance", "market"]
+        },
+        {
+          "name": "HTTPBin",
+          "file": "web-apis/utilities/httpbin.json",
+          "description": "HTTP request testing service",
+          "auth_required": false,
+          "tags": ["testing", "http", "debugging"]
+        }
+      ]
+    },
+    "development-tools": {
+      "name": "Development Tools",
+      "description": "Testing, utilities, and developer services",
+      "manuals": [
+        {
+          "name": "JSONPlaceholder",
+          "file": "development-tools/testing/jsonplaceholder.json",
+          "description": "Fake REST API for testing",
+          "auth_required": false,
+          "tags": ["testing", "fake-api", "development"]
+        },
+        {
+          "name": "TinyURL",
+          "file": "development-tools/utilities/tinyurl.json",
+          "description": "URL shortening service",
+          "auth_required": false,
+          "tags": ["url", "shortener", "utility"]
+        },
+        {
+          "name": "QR Server",
+          "file": "development-tools/utilities/qr-server.json",
+          "description": "QR code generation and reading",
+          "auth_required": false,
+          "tags": ["qr-code", "generator", "utility"]
+        },
+        {
+          "name": "UUID Generator",
+          "file": "development-tools/utilities/uuid-generator.json",
+          "description": "UUID generation and validation",
+          "auth_required": false,
+          "tags": ["uuid", "generator", "identifier"]
+        }
+      ]
+    },
+    "data-analytics": {
+      "name": "Data & Analytics",
+      "description": "Data sources, statistics, and information services",
+      "manuals": [
+        {
+          "name": "REST Countries",
+          "file": "data-analytics/geography/rest-countries.json",
+          "description": "World countries information",
+          "auth_required": false,
+          "tags": ["countries", "geography", "data"]
+        },
+        {
+          "name": "IP API",
+          "file": "data-analytics/network/ipapi.json",
+          "description": "IP address geolocation",
+          "auth_required": false,
+          "tags": ["ip", "geolocation", "network"]
+        }
+      ]
+    },
+    "ai-ml": {
+      "name": "AI & Machine Learning",
+      "description": "Artificial intelligence and machine learning services",
+      "manuals": [
+        {
+          "name": "Hugging Face",
+          "file": "ai-ml/huggingface.json",
+          "description": "AI models for text, image, and speech",
+          "auth_required": true,
+          "tags": ["ai", "nlp", "image-generation", "speech"]
+        },
+        {
+          "name": "OpenAI",
+          "file": "ai-ml/openai.json",
+          "description": "GPT, DALL-E, Whisper, and TTS models",
+          "auth_required": true,
+          "tags": ["ai", "gpt", "dall-e", "whisper", "tts"]
+        }
+      ]
+    }
+  },
+  "statistics": {
+    "total_tools": 47,
+    "auth_required": 5,
+    "auth_free": 8,
+    "most_popular_tags": [
+      "ai",
+      "testing", 
+      "utility",
+      "data",
+      "generator"
+    ]
+  }
+}
+

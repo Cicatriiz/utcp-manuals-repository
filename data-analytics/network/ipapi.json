@@ -1,0 +1,179 @@
+{
+  "utcp_version": "1.0.0",
+  "manual_version": "1.0.0",
+  "tools": [
+    {
+      "name": "get_current_ip_info",
+      "description": "Get geolocation information for the current IP address",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "string",
+            "description": "Comma-separated list of fields to include (e.g., 'status,country,regionName,city,zip,lat,lon,timezone,isp')"
+          },
+          "lang": {
+            "type": "string",
+            "description": "Language for country, regionName and city",
+            "enum": ["en", "de", "es", "pt-BR", "fr", "ja", "zh-CN", "ru"],
+            "default": "en"
+          }
+        }
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "status": {"type": "string"},
+          "country": {"type": "string"},
+          "countryCode": {"type": "string"},
+          "region": {"type": "string"},
+          "regionName": {"type": "string"},
+          "city": {"type": "string"},
+          "zip": {"type": "string"},
+          "lat": {"type": "number"},
+          "lon": {"type": "number"},
+          "timezone": {"type": "string"},
+          "isp": {"type": "string"},
+          "org": {"type": "string"},
+          "as": {"type": "string"},
+          "query": {"type": "string"}
+        }
+      },
+      "tags": ["ip", "geolocation", "network", "current", "location"],
+      "average_response_size": 400,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "http://ip-api.com/json/",
+        "http_method": "GET",
+        "query_params": {
+          "fields": "{fields}",
+          "lang": "{lang}"
+        }
+      }
+    },
+    {
+      "name": "get_ip_info",
+      "description": "Get geolocation information for a specific IP address",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "ip": {
+            "type": "string",
+            "description": "IP address to lookup (IPv4 or IPv6)"
+          },
+          "fields": {
+            "type": "string",
+            "description": "Comma-separated list of fields to include"
+          },
+          "lang": {
+            "type": "string",
+            "description": "Language for country, regionName and city",
+            "enum": ["en", "de", "es", "pt-BR", "fr", "ja", "zh-CN", "ru"],
+            "default": "en"
+          }
+        },
+        "required": ["ip"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "status": {"type": "string"},
+          "country": {"type": "string"},
+          "countryCode": {"type": "string"},
+          "region": {"type": "string"},
+          "regionName": {"type": "string"},
+          "city": {"type": "string"},
+          "zip": {"type": "string"},
+          "lat": {"type": "number"},
+          "lon": {"type": "number"},
+          "timezone": {"type": "string"},
+          "isp": {"type": "string"},
+          "org": {"type": "string"},
+          "as": {"type": "string"},
+          "query": {"type": "string"},
+          "mobile": {"type": "boolean"},
+          "proxy": {"type": "boolean"},
+          "hosting": {"type": "boolean"}
+        }
+      },
+      "tags": ["ip", "geolocation", "network", "lookup", "location"],
+      "average_response_size": 450,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "http://ip-api.com/json/{ip}",
+        "http_method": "GET",
+        "query_params": {
+          "fields": "{fields}",
+          "lang": "{lang}"
+        }
+      }
+    },
+    {
+      "name": "batch_ip_lookup",
+      "description": "Get geolocation information for multiple IP addresses in a single request",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "ips": {
+            "type": "array",
+            "description": "Array of IP addresses to lookup (max 100)",
+            "items": {"type": "string"},
+            "maxItems": 100
+          },
+          "fields": {
+            "type": "string",
+            "description": "Comma-separated list of fields to include"
+          },
+          "lang": {
+            "type": "string",
+            "description": "Language for country, regionName and city",
+            "enum": ["en", "de", "es", "pt-BR", "fr", "ja", "zh-CN", "ru"],
+            "default": "en"
+          }
+        },
+        "required": ["ips"]
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "status": {"type": "string"},
+            "country": {"type": "string"},
+            "countryCode": {"type": "string"},
+            "region": {"type": "string"},
+            "regionName": {"type": "string"},
+            "city": {"type": "string"},
+            "zip": {"type": "string"},
+            "lat": {"type": "number"},
+            "lon": {"type": "number"},
+            "timezone": {"type": "string"},
+            "isp": {"type": "string"},
+            "org": {"type": "string"},
+            "as": {"type": "string"},
+            "query": {"type": "string"},
+            "mobile": {"type": "boolean"},
+            "proxy": {"type": "boolean"},
+            "hosting": {"type": "boolean"}
+          }
+        }
+      },
+      "tags": ["ip", "geolocation", "network", "batch", "bulk"],
+      "average_response_size": 2000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "http://ip-api.com/batch",
+        "http_method": "POST",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{ips}",
+        "query_params": {
+          "fields": "{fields}",
+          "lang": "{lang}"
+        }
+      }
+    }
+  ]
+}
+

@@ -1,0 +1,42 @@
+{
+  "utcp_version": "1.0.0",
+  "manual_version": "1.0.0",
+  "tools": [
+    {
+      "name": "shorten_url",
+      "description": "Shorten a long URL using TinyURL service",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The long URL to shorten (must include http:// or https://)",
+            "format": "uri"
+          },
+          "alias": {
+            "type": "string",
+            "description": "Optional custom alias for the shortened URL (alphanumeric characters only)",
+            "pattern": "^[a-zA-Z0-9]+$"
+          }
+        },
+        "required": ["url"]
+      },
+      "outputs": {
+        "type": "string",
+        "description": "The shortened URL"
+      },
+      "tags": ["url", "shortener", "utility", "web", "link"],
+      "average_response_size": 50,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://tinyurl.com/api-create.php",
+        "http_method": "GET",
+        "query_params": {
+          "url": "{url}",
+          "alias": "{alias}"
+        }
+      }
+    }
+  ]
+}
+

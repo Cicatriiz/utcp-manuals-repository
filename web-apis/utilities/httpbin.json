@@ -1,0 +1,170 @@
+{
+  "utcp_version": "1.0.0",
+  "manual_version": "1.0.0",
+  "tools": [
+    {
+      "name": "test_get_request",
+      "description": "Test HTTP GET request with HTTPBin service",
+      "inputs": {
+        "type": "object",
+        "properties": {}
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "args": {"type": "object"},
+          "headers": {"type": "object"},
+          "origin": {"type": "string"},
+          "url": {"type": "string"}
+        }
+      },
+      "tags": ["testing", "http", "debugging", "development"],
+      "average_response_size": 800,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://httpbin.org/get",
+        "http_method": "GET"
+      }
+    },
+    {
+      "name": "test_post_request",
+      "description": "Test HTTP POST request with JSON data",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "JSON data to send in POST request"
+          }
+        },
+        "required": ["data"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "args": {"type": "object"},
+          "data": {"type": "string"},
+          "files": {"type": "object"},
+          "form": {"type": "object"},
+          "headers": {"type": "object"},
+          "json": {"type": "object"},
+          "origin": {"type": "string"},
+          "url": {"type": "string"}
+        }
+      },
+      "tags": ["testing", "http", "post", "json", "debugging"],
+      "average_response_size": 1200,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://httpbin.org/post",
+        "http_method": "POST",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{data}"
+      }
+    },
+    {
+      "name": "get_user_agent",
+      "description": "Get the user agent string of the request",
+      "inputs": {
+        "type": "object",
+        "properties": {}
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "user-agent": {"type": "string"}
+        }
+      },
+      "tags": ["testing", "http", "user-agent", "headers"],
+      "average_response_size": 100,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://httpbin.org/user-agent",
+        "http_method": "GET"
+      }
+    },
+    {
+      "name": "get_ip_address",
+      "description": "Get the origin IP address of the request",
+      "inputs": {
+        "type": "object",
+        "properties": {}
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "origin": {"type": "string"}
+        }
+      },
+      "tags": ["testing", "http", "ip", "network"],
+      "average_response_size": 50,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://httpbin.org/ip",
+        "http_method": "GET"
+      }
+    },
+    {
+      "name": "test_status_code",
+      "description": "Test specific HTTP status code response",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "status_code": {
+            "type": "integer",
+            "description": "HTTP status code to return (e.g., 200, 404, 500)",
+            "minimum": 100,
+            "maximum": 599
+          }
+        },
+        "required": ["status_code"]
+      },
+      "outputs": {
+        "type": "string",
+        "description": "Response body (may be empty for some status codes)"
+      },
+      "tags": ["testing", "http", "status-codes", "debugging"],
+      "average_response_size": 100,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://httpbin.org/status/{status_code}",
+        "http_method": "GET"
+      }
+    },
+    {
+      "name": "test_delay",
+      "description": "Test request with artificial delay",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "delay": {
+            "type": "integer",
+            "description": "Delay in seconds (max 10)",
+            "minimum": 1,
+            "maximum": 10
+          }
+        },
+        "required": ["delay"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "args": {"type": "object"},
+          "headers": {"type": "object"},
+          "origin": {"type": "string"},
+          "url": {"type": "string"}
+        }
+      },
+      "tags": ["testing", "http", "delay", "timeout", "performance"],
+      "average_response_size": 800,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://httpbin.org/delay/{delay}",
+        "http_method": "GET"
+      }
+    }
+  ]
+}
+

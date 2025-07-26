@@ -1,0 +1,96 @@
+{
+  "utcp_version": "1.0.0",
+  "manual_version": "1.0.0",
+  "tools": [
+    {
+      "name": "generate_uuid_v4",
+      "description": "Generate a random UUID version 4",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": "Number of UUIDs to generate (1-100)",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 1
+          }
+        }
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "description": "Generated UUID string"
+        }
+      },
+      "tags": ["uuid", "generator", "random", "identifier", "utility"],
+      "average_response_size": 200,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://www.uuidgenerator.net/api/version4/{count}",
+        "http_method": "GET"
+      }
+    },
+    {
+      "name": "generate_uuid_v1",
+      "description": "Generate a UUID version 1 (timestamp-based)",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": "Number of UUIDs to generate (1-100)",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 1
+          }
+        }
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "description": "Generated UUID string"
+        }
+      },
+      "tags": ["uuid", "generator", "timestamp", "identifier", "utility"],
+      "average_response_size": 200,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://www.uuidgenerator.net/api/version1/{count}",
+        "http_method": "GET"
+      }
+    },
+    {
+      "name": "validate_uuid",
+      "description": "Validate if a string is a valid UUID",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "UUID string to validate"
+          }
+        },
+        "required": ["uuid"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "isValid": {"type": "boolean"},
+          "version": {"type": "integer"},
+          "variant": {"type": "string"}
+        }
+      },
+      "tags": ["uuid", "validation", "identifier", "utility"],
+      "average_response_size": 100,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://www.uuidgenerator.net/api/validate/{uuid}",
+        "http_method": "GET"
+      }
+    }
+  ]
+}
+

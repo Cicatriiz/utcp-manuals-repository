@@ -1,0 +1,414 @@
+{
+  "utcp_version": "1.0.0",
+  "manual_version": "1.0.0",
+  "tools": [
+    {
+      "name": "get_all_countries",
+      "description": "Get information about all countries",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "string",
+            "description": "Comma-separated list of fields to include (e.g., 'name,capital,population')"
+          }
+        }
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "object",
+              "properties": {
+                "common": {"type": "string"},
+                "official": {"type": "string"},
+                "nativeName": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "official": {"type": "string"},
+                      "common": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            },
+            "tld": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "cca2": {"type": "string"},
+            "ccn3": {"type": "string"},
+            "cca3": {"type": "string"},
+            "cioc": {"type": "string"},
+            "independent": {"type": "boolean"},
+            "status": {"type": "string"},
+            "unMember": {"type": "boolean"},
+            "currencies": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string"},
+                  "symbol": {"type": "string"}
+                }
+              }
+            },
+            "idd": {
+              "type": "object",
+              "properties": {
+                "root": {"type": "string"},
+                "suffixes": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                }
+              }
+            },
+            "capital": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "altSpellings": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "region": {"type": "string"},
+            "subregion": {"type": "string"},
+            "languages": {
+              "type": "object",
+              "additionalProperties": {"type": "string"}
+            },
+            "translations": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "official": {"type": "string"},
+                  "common": {"type": "string"}
+                }
+              }
+            },
+            "latlng": {
+              "type": "array",
+              "items": {"type": "number"}
+            },
+            "landlocked": {"type": "boolean"},
+            "borders": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "area": {"type": "number"},
+            "demonyms": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "f": {"type": "string"},
+                  "m": {"type": "string"}
+                }
+              }
+            },
+            "flag": {"type": "string"},
+            "maps": {
+              "type": "object",
+              "properties": {
+                "googleMaps": {"type": "string"},
+                "openStreetMaps": {"type": "string"}
+              }
+            },
+            "population": {"type": "integer"},
+            "gini": {
+              "type": "object",
+              "additionalProperties": {"type": "number"}
+            },
+            "fifa": {"type": "string"},
+            "car": {
+              "type": "object",
+              "properties": {
+                "signs": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                },
+                "side": {"type": "string"}
+              }
+            },
+            "timezones": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "continents": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "flags": {
+              "type": "object",
+              "properties": {
+                "png": {"type": "string"},
+                "svg": {"type": "string"},
+                "alt": {"type": "string"}
+              }
+            },
+            "coatOfArms": {
+              "type": "object",
+              "properties": {
+                "png": {"type": "string"},
+                "svg": {"type": "string"}
+              }
+            },
+            "startOfWeek": {"type": "string"},
+            "capitalInfo": {
+              "type": "object",
+              "properties": {
+                "latlng": {
+                  "type": "array",
+                  "items": {"type": "number"}
+                }
+              }
+            },
+            "postalCode": {
+              "type": "object",
+              "properties": {
+                "format": {"type": "string"},
+                "regex": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "tags": ["countries", "geography", "data", "reference", "world"],
+      "average_response_size": 150000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://restcountries.com/v3.1/all",
+        "http_method": "GET",
+        "query_params": {
+          "fields": "{fields}"
+        }
+      }
+    },
+    {
+      "name": "get_country_by_name",
+      "description": "Get country information by name (common or official)",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Country name to search for"
+          },
+          "fullText": {
+            "type": "boolean",
+            "description": "Search for exact match only",
+            "default": false
+          },
+          "fields": {
+            "type": "string",
+            "description": "Comma-separated list of fields to include"
+          }
+        },
+        "required": ["name"]
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "object",
+              "properties": {
+                "common": {"type": "string"},
+                "official": {"type": "string"}
+              }
+            },
+            "capital": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "region": {"type": "string"},
+            "subregion": {"type": "string"},
+            "population": {"type": "integer"},
+            "area": {"type": "number"},
+            "currencies": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string"},
+                  "symbol": {"type": "string"}
+                }
+              }
+            },
+            "languages": {
+              "type": "object",
+              "additionalProperties": {"type": "string"}
+            },
+            "flags": {
+              "type": "object",
+              "properties": {
+                "png": {"type": "string"},
+                "svg": {"type": "string"}
+              }
+            },
+            "latlng": {
+              "type": "array",
+              "items": {"type": "number"}
+            },
+            "timezones": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          }
+        }
+      },
+      "tags": ["country", "search", "geography", "data", "lookup"],
+      "average_response_size": 3000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://restcountries.com/v3.1/name/{name}",
+        "http_method": "GET",
+        "query_params": {
+          "fullText": "{fullText}",
+          "fields": "{fields}"
+        }
+      }
+    },
+    {
+      "name": "get_country_by_code",
+      "description": "Get country information by country code (alpha2, alpha3, or numeric)",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Country code (e.g., 'US', 'USA', '840')"
+          },
+          "fields": {
+            "type": "string",
+            "description": "Comma-separated list of fields to include"
+          }
+        },
+        "required": ["code"]
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "object",
+              "properties": {
+                "common": {"type": "string"},
+                "official": {"type": "string"}
+              }
+            },
+            "cca2": {"type": "string"},
+            "cca3": {"type": "string"},
+            "ccn3": {"type": "string"},
+            "capital": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "region": {"type": "string"},
+            "subregion": {"type": "string"},
+            "population": {"type": "integer"},
+            "area": {"type": "number"},
+            "currencies": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string"},
+                  "symbol": {"type": "string"}
+                }
+              }
+            },
+            "languages": {
+              "type": "object",
+              "additionalProperties": {"type": "string"}
+            },
+            "flags": {
+              "type": "object",
+              "properties": {
+                "png": {"type": "string"},
+                "svg": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "tags": ["country", "code", "geography", "data", "lookup"],
+      "average_response_size": 2000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://restcountries.com/v3.1/alpha/{code}",
+        "http_method": "GET",
+        "query_params": {
+          "fields": "{fields}"
+        }
+      }
+    },
+    {
+      "name": "get_countries_by_region",
+      "description": "Get all countries in a specific region",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "Region name",
+            "enum": ["Africa", "Americas", "Asia", "Europe", "Oceania"]
+          },
+          "fields": {
+            "type": "string",
+            "description": "Comma-separated list of fields to include"
+          }
+        },
+        "required": ["region"]
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "object",
+              "properties": {
+                "common": {"type": "string"},
+                "official": {"type": "string"}
+              }
+            },
+            "capital": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "region": {"type": "string"},
+            "subregion": {"type": "string"},
+            "population": {"type": "integer"},
+            "area": {"type": "number"},
+            "flags": {
+              "type": "object",
+              "properties": {
+                "png": {"type": "string"},
+                "svg": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "tags": ["countries", "region", "geography", "data", "filter"],
+      "average_response_size": 25000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://restcountries.com/v3.1/region/{region}",
+        "http_method": "GET",
+        "query_params": {
+          "fields": "{fields}"
+        }
+      }
+    }
+  ]
+}
+

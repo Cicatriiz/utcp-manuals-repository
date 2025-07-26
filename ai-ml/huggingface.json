@@ -1,0 +1,397 @@
+{
+  "utcp_version": "1.0.0",
+  "manual_version": "1.0.0",
+  "tools": [
+    {
+      "name": "text_generation",
+      "description": "Generate text using Hugging Face text generation models",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "inputs": {
+            "type": "string",
+            "description": "Input text prompt for generation"
+          },
+          "model": {
+            "type": "string",
+            "description": "Model ID to use for generation (e.g., 'gpt2', 'microsoft/DialoGPT-medium')",
+            "default": "gpt2"
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "max_new_tokens": {
+                "type": "integer",
+                "description": "Maximum number of tokens to generate",
+                "minimum": 1,
+                "maximum": 1000,
+                "default": 100
+              },
+              "temperature": {
+                "type": "number",
+                "description": "Sampling temperature (0.0 to 2.0)",
+                "minimum": 0.0,
+                "maximum": 2.0,
+                "default": 1.0
+              },
+              "top_p": {
+                "type": "number",
+                "description": "Nucleus sampling parameter",
+                "minimum": 0.0,
+                "maximum": 1.0,
+                "default": 1.0
+              },
+              "repetition_penalty": {
+                "type": "number",
+                "description": "Repetition penalty",
+                "minimum": 0.0,
+                "maximum": 2.0,
+                "default": 1.0
+              },
+              "do_sample": {
+                "type": "boolean",
+                "description": "Whether to use sampling",
+                "default": true
+              }
+            }
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "wait_for_model": {
+                "type": "boolean",
+                "description": "Wait for model to load if not ready",
+                "default": false
+              },
+              "use_cache": {
+                "type": "boolean",
+                "description": "Use cached results if available",
+                "default": true
+              }
+            }
+          }
+        },
+        "required": ["inputs"]
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "generated_text": {"type": "string"}
+          }
+        }
+      },
+      "tags": ["ai", "text-generation", "nlp", "language-model", "gpt"],
+      "average_response_size": 1000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api-inference.huggingface.co/models/{model}",
+        "http_method": "POST",
+        "headers": {
+          "Authorization": "Bearer {api_key}",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "inputs": "{inputs}",
+          "parameters": "{parameters}",
+          "options": "{options}"
+        },
+        "auth": {
+          "auth_type": "bearer",
+          "api_key": "YOUR_HUGGINGFACE_API_KEY"
+        }
+      }
+    },
+    {
+      "name": "text_classification",
+      "description": "Classify text using Hugging Face classification models",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "inputs": {
+            "type": "string",
+            "description": "Text to classify"
+          },
+          "model": {
+            "type": "string",
+            "description": "Model ID to use for classification (e.g., 'cardiffnlp/twitter-roberta-base-sentiment-latest')",
+            "default": "cardiffnlp/twitter-roberta-base-sentiment-latest"
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "wait_for_model": {
+                "type": "boolean",
+                "description": "Wait for model to load if not ready",
+                "default": false
+              },
+              "use_cache": {
+                "type": "boolean",
+                "description": "Use cached results if available",
+                "default": true
+              }
+            }
+          }
+        },
+        "required": ["inputs"]
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {"type": "string"},
+            "score": {"type": "number"}
+          }
+        }
+      },
+      "tags": ["ai", "text-classification", "nlp", "sentiment", "analysis"],
+      "average_response_size": 300,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api-inference.huggingface.co/models/{model}",
+        "http_method": "POST",
+        "headers": {
+          "Authorization": "Bearer {api_key}",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "inputs": "{inputs}",
+          "options": "{options}"
+        },
+        "auth": {
+          "auth_type": "bearer",
+          "api_key": "YOUR_HUGGINGFACE_API_KEY"
+        }
+      }
+    },
+    {
+      "name": "question_answering",
+      "description": "Answer questions based on context using Hugging Face QA models",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "inputs": {
+            "type": "object",
+            "properties": {
+              "question": {
+                "type": "string",
+                "description": "Question to answer"
+              },
+              "context": {
+                "type": "string",
+                "description": "Context text containing the answer"
+              }
+            },
+            "required": ["question", "context"]
+          },
+          "model": {
+            "type": "string",
+            "description": "Model ID to use for QA (e.g., 'deepset/roberta-base-squad2')",
+            "default": "deepset/roberta-base-squad2"
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "wait_for_model": {
+                "type": "boolean",
+                "description": "Wait for model to load if not ready",
+                "default": false
+              },
+              "use_cache": {
+                "type": "boolean",
+                "description": "Use cached results if available",
+                "default": true
+              }
+            }
+          }
+        },
+        "required": ["inputs"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "answer": {"type": "string"},
+          "score": {"type": "number"},
+          "start": {"type": "integer"},
+          "end": {"type": "integer"}
+        }
+      },
+      "tags": ["ai", "question-answering", "nlp", "qa", "comprehension"],
+      "average_response_size": 200,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api-inference.huggingface.co/models/{model}",
+        "http_method": "POST",
+        "headers": {
+          "Authorization": "Bearer {api_key}",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "inputs": "{inputs}",
+          "options": "{options}"
+        },
+        "auth": {
+          "auth_type": "bearer",
+          "api_key": "YOUR_HUGGINGFACE_API_KEY"
+        }
+      }
+    },
+    {
+      "name": "text_to_image",
+      "description": "Generate images from text prompts using Hugging Face diffusion models",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "inputs": {
+            "type": "string",
+            "description": "Text prompt for image generation"
+          },
+          "model": {
+            "type": "string",
+            "description": "Model ID to use for image generation (e.g., 'stabilityai/stable-diffusion-2-1')",
+            "default": "stabilityai/stable-diffusion-2-1"
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "negative_prompt": {
+                "type": "string",
+                "description": "Negative prompt to avoid certain elements"
+              },
+              "num_inference_steps": {
+                "type": "integer",
+                "description": "Number of denoising steps",
+                "minimum": 1,
+                "maximum": 100,
+                "default": 50
+              },
+              "guidance_scale": {
+                "type": "number",
+                "description": "Guidance scale for prompt adherence",
+                "minimum": 1.0,
+                "maximum": 20.0,
+                "default": 7.5
+              },
+              "width": {
+                "type": "integer",
+                "description": "Image width",
+                "enum": [512, 768, 1024],
+                "default": 512
+              },
+              "height": {
+                "type": "integer",
+                "description": "Image height",
+                "enum": [512, 768, 1024],
+                "default": 512
+              }
+            }
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "wait_for_model": {
+                "type": "boolean",
+                "description": "Wait for model to load if not ready",
+                "default": false
+              },
+              "use_cache": {
+                "type": "boolean",
+                "description": "Use cached results if available",
+                "default": true
+              }
+            }
+          }
+        },
+        "required": ["inputs"]
+      },
+      "outputs": {
+        "type": "string",
+        "description": "Base64 encoded image data",
+        "format": "binary"
+      },
+      "tags": ["ai", "text-to-image", "image-generation", "diffusion", "stable-diffusion"],
+      "average_response_size": 100000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api-inference.huggingface.co/models/{model}",
+        "http_method": "POST",
+        "headers": {
+          "Authorization": "Bearer {api_key}",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "inputs": "{inputs}",
+          "parameters": "{parameters}",
+          "options": "{options}"
+        },
+        "auth": {
+          "auth_type": "bearer",
+          "api_key": "YOUR_HUGGINGFACE_API_KEY"
+        }
+      }
+    },
+    {
+      "name": "speech_recognition",
+      "description": "Convert speech to text using Hugging Face ASR models",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "inputs": {
+            "type": "string",
+            "description": "Base64 encoded audio data or audio file bytes",
+            "format": "binary"
+          },
+          "model": {
+            "type": "string",
+            "description": "Model ID to use for speech recognition (e.g., 'openai/whisper-large-v3')",
+            "default": "openai/whisper-large-v3"
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "wait_for_model": {
+                "type": "boolean",
+                "description": "Wait for model to load if not ready",
+                "default": false
+              },
+              "use_cache": {
+                "type": "boolean",
+                "description": "Use cached results if available",
+                "default": true
+              }
+            }
+          }
+        },
+        "required": ["inputs"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string"}
+        }
+      },
+      "tags": ["ai", "speech-recognition", "asr", "whisper", "audio"],
+      "average_response_size": 500,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api-inference.huggingface.co/models/{model}",
+        "http_method": "POST",
+        "headers": {
+          "Authorization": "Bearer {api_key}",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "inputs": "{inputs}",
+          "options": "{options}"
+        },
+        "auth": {
+          "auth_type": "bearer",
+          "api_key": "YOUR_HUGGINGFACE_API_KEY"
+        }
+      }
+    }
+  ]
+}
+

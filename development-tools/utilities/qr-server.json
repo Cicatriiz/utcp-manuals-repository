@@ -1,0 +1,124 @@
+{
+  "utcp_version": "1.0.0",
+  "manual_version": "1.0.0",
+  "tools": [
+    {
+      "name": "generate_qr_code",
+      "description": "Generate QR code image for any text or URL",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "Text or URL to encode in the QR code"
+          },
+          "size": {
+            "type": "string",
+            "description": "Size of the QR code image (e.g., '200x200', '150x150')",
+            "pattern": "^\\d+x\\d+$",
+            "default": "200x200"
+          },
+          "color": {
+            "type": "string",
+            "description": "Foreground color in hex format (without #)",
+            "pattern": "^[0-9A-Fa-f]{6}$",
+            "default": "000000"
+          },
+          "bgcolor": {
+            "type": "string",
+            "description": "Background color in hex format (without #)",
+            "pattern": "^[0-9A-Fa-f]{6}$",
+            "default": "ffffff"
+          },
+          "format": {
+            "type": "string",
+            "description": "Output image format",
+            "enum": ["png", "gif", "jpeg", "jpg", "svg"],
+            "default": "png"
+          },
+          "ecc": {
+            "type": "string",
+            "description": "Error correction level",
+            "enum": ["L", "M", "Q", "H"],
+            "default": "M"
+          },
+          "margin": {
+            "type": "integer",
+            "description": "Margin around the QR code (0-50)",
+            "minimum": 0,
+            "maximum": 50,
+            "default": 0
+          }
+        },
+        "required": ["data"]
+      },
+      "outputs": {
+        "type": "string",
+        "description": "Binary image data (PNG/JPEG/GIF) or SVG markup",
+        "format": "binary"
+      },
+      "tags": ["qr-code", "generator", "image", "utility", "encoding"],
+      "average_response_size": 5000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api.qrserver.com/v1/create-qr-code/",
+        "http_method": "GET",
+        "query_params": {
+          "data": "{data}",
+          "size": "{size}",
+          "color": "{color}",
+          "bgcolor": "{bgcolor}",
+          "format": "{format}",
+          "ecc": "{ecc}",
+          "margin": "{margin}"
+        }
+      }
+    },
+    {
+      "name": "read_qr_code",
+      "description": "Read/decode QR code from an image URL",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "fileurl": {
+            "type": "string",
+            "description": "URL of the image containing the QR code",
+            "format": "uri"
+          }
+        },
+        "required": ["fileurl"]
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": {"type": "string"},
+            "symbol": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "seq": {"type": "integer"},
+                  "data": {"type": "string"},
+                  "error": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      },
+      "tags": ["qr-code", "reader", "decoder", "utility", "image"],
+      "average_response_size": 500,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api.qrserver.com/v1/read-qr-code/",
+        "http_method": "GET",
+        "query_params": {
+          "fileurl": "{fileurl}"
+        }
+      }
+    }
+  ]
+}
+

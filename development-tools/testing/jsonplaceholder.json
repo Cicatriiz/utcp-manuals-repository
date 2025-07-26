@@ -1,0 +1,215 @@
+{
+  "utcp_version": "1.0.0",
+  "manual_version": "1.0.0",
+  "tools": [
+    {
+      "name": "get_posts",
+      "description": "Get all posts from JSONPlaceholder fake REST API",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "description": "Filter posts by user ID",
+            "minimum": 1,
+            "maximum": 10
+          }
+        }
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "userId": {"type": "integer"},
+            "id": {"type": "integer"},
+            "title": {"type": "string"},
+            "body": {"type": "string"}
+          }
+        }
+      },
+      "tags": ["testing", "fake-api", "development", "posts", "json"],
+      "average_response_size": 8000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "http_method": "GET",
+        "query_params": {
+          "userId": "{userId}"
+        }
+      }
+    },
+    {
+      "name": "get_post",
+      "description": "Get a specific post by ID from JSONPlaceholder",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Post ID to retrieve",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": ["id"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "userId": {"type": "integer"},
+          "id": {"type": "integer"},
+          "title": {"type": "string"},
+          "body": {"type": "string"}
+        }
+      },
+      "tags": ["testing", "fake-api", "development", "post", "json"],
+      "average_response_size": 200,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://jsonplaceholder.typicode.com/posts/{id}",
+        "http_method": "GET"
+      }
+    },
+    {
+      "name": "get_users",
+      "description": "Get all users from JSONPlaceholder fake REST API",
+      "inputs": {
+        "type": "object",
+        "properties": {}
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {"type": "integer"},
+            "name": {"type": "string"},
+            "username": {"type": "string"},
+            "email": {"type": "string"},
+            "address": {
+              "type": "object",
+              "properties": {
+                "street": {"type": "string"},
+                "suite": {"type": "string"},
+                "city": {"type": "string"},
+                "zipcode": {"type": "string"},
+                "geo": {
+                  "type": "object",
+                  "properties": {
+                    "lat": {"type": "string"},
+                    "lng": {"type": "string"}
+                  }
+                }
+              }
+            },
+            "phone": {"type": "string"},
+            "website": {"type": "string"},
+            "company": {
+              "type": "object",
+              "properties": {
+                "name": {"type": "string"},
+                "catchPhrase": {"type": "string"},
+                "bs": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "tags": ["testing", "fake-api", "development", "users", "json"],
+      "average_response_size": 5000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://jsonplaceholder.typicode.com/users",
+        "http_method": "GET"
+      }
+    },
+    {
+      "name": "get_comments",
+      "description": "Get comments for a specific post or all comments",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "postId": {
+            "type": "integer",
+            "description": "Filter comments by post ID",
+            "minimum": 1,
+            "maximum": 100
+          }
+        }
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "postId": {"type": "integer"},
+            "id": {"type": "integer"},
+            "name": {"type": "string"},
+            "email": {"type": "string"},
+            "body": {"type": "string"}
+          }
+        }
+      },
+      "tags": ["testing", "fake-api", "development", "comments", "json"],
+      "average_response_size": 12000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://jsonplaceholder.typicode.com/comments",
+        "http_method": "GET",
+        "query_params": {
+          "postId": "{postId}"
+        }
+      }
+    },
+    {
+      "name": "create_post",
+      "description": "Create a new post (simulation only - returns fake response)",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Post title"
+          },
+          "body": {
+            "type": "string",
+            "description": "Post content"
+          },
+          "userId": {
+            "type": "integer",
+            "description": "User ID creating the post",
+            "minimum": 1,
+            "maximum": 10
+          }
+        },
+        "required": ["title", "body", "userId"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "integer"},
+          "title": {"type": "string"},
+          "body": {"type": "string"},
+          "userId": {"type": "integer"}
+        }
+      },
+      "tags": ["testing", "fake-api", "development", "create", "post"],
+      "average_response_size": 150,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "http_method": "POST",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "title": "{title}",
+          "body": "{body}",
+          "userId": "{userId}"
+        }
+      }
+    }
+  ]
+}
+

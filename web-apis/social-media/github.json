@@ -1,0 +1,413 @@
+{
+  "utcp_version": "1.0.0",
+  "manual_version": "1.0.0",
+  "tools": [
+    {
+      "name": "get_user",
+      "description": "Get public information about a GitHub user by username",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "GitHub username to retrieve information for"
+          }
+        },
+        "required": ["username"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "login": {"type": "string"},
+          "id": {"type": "integer"},
+          "node_id": {"type": "string"},
+          "avatar_url": {"type": "string"},
+          "gravatar_id": {"type": "string"},
+          "url": {"type": "string"},
+          "html_url": {"type": "string"},
+          "followers_url": {"type": "string"},
+          "following_url": {"type": "string"},
+          "gists_url": {"type": "string"},
+          "starred_url": {"type": "string"},
+          "subscriptions_url": {"type": "string"},
+          "organizations_url": {"type": "string"},
+          "repos_url": {"type": "string"},
+          "events_url": {"type": "string"},
+          "received_events_url": {"type": "string"},
+          "type": {"type": "string"},
+          "site_admin": {"type": "boolean"},
+          "name": {"type": "string"},
+          "company": {"type": "string"},
+          "blog": {"type": "string"},
+          "location": {"type": "string"},
+          "email": {"type": "string"},
+          "hireable": {"type": "boolean"},
+          "bio": {"type": "string"},
+          "twitter_username": {"type": "string"},
+          "public_repos": {"type": "integer"},
+          "public_gists": {"type": "integer"},
+          "followers": {"type": "integer"},
+          "following": {"type": "integer"},
+          "created_at": {"type": "string"},
+          "updated_at": {"type": "string"}
+        }
+      },
+      "tags": ["github", "user", "profile", "social"],
+      "average_response_size": 1200,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api.github.com/users/{username}",
+        "http_method": "GET",
+        "headers": {
+          "Accept": "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28"
+        }
+      }
+    },
+    {
+      "name": "list_user_repositories",
+      "description": "List public repositories for a GitHub user",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "GitHub username to list repositories for"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of repositories to list",
+            "enum": ["all", "owner", "member"],
+            "default": "all"
+          },
+          "sort": {
+            "type": "string",
+            "description": "Sort repositories by",
+            "enum": ["created", "updated", "pushed", "full_name"],
+            "default": "created"
+          },
+          "direction": {
+            "type": "string",
+            "description": "Sort direction",
+            "enum": ["asc", "desc"],
+            "default": "desc"
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of results per page (max 100)",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of results to fetch",
+            "minimum": 1,
+            "default": 1
+          }
+        },
+        "required": ["username"]
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {"type": "integer"},
+            "node_id": {"type": "string"},
+            "name": {"type": "string"},
+            "full_name": {"type": "string"},
+            "private": {"type": "boolean"},
+            "owner": {
+              "type": "object",
+              "properties": {
+                "login": {"type": "string"},
+                "id": {"type": "integer"},
+                "avatar_url": {"type": "string"},
+                "html_url": {"type": "string"}
+              }
+            },
+            "html_url": {"type": "string"},
+            "description": {"type": "string"},
+            "fork": {"type": "boolean"},
+            "url": {"type": "string"},
+            "created_at": {"type": "string"},
+            "updated_at": {"type": "string"},
+            "pushed_at": {"type": "string"},
+            "git_url": {"type": "string"},
+            "ssh_url": {"type": "string"},
+            "clone_url": {"type": "string"},
+            "svn_url": {"type": "string"},
+            "homepage": {"type": "string"},
+            "size": {"type": "integer"},
+            "stargazers_count": {"type": "integer"},
+            "watchers_count": {"type": "integer"},
+            "language": {"type": "string"},
+            "has_issues": {"type": "boolean"},
+            "has_projects": {"type": "boolean"},
+            "has_wiki": {"type": "boolean"},
+            "has_pages": {"type": "boolean"},
+            "forks_count": {"type": "integer"},
+            "archived": {"type": "boolean"},
+            "disabled": {"type": "boolean"},
+            "open_issues_count": {"type": "integer"},
+            "license": {
+              "type": "object",
+              "properties": {
+                "key": {"type": "string"},
+                "name": {"type": "string"},
+                "spdx_id": {"type": "string"},
+                "url": {"type": "string"}
+              }
+            },
+            "allow_forking": {"type": "boolean"},
+            "is_template": {"type": "boolean"},
+            "topics": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "visibility": {"type": "string"},
+            "forks": {"type": "integer"},
+            "open_issues": {"type": "integer"},
+            "watchers": {"type": "integer"},
+            "default_branch": {"type": "string"}
+          }
+        }
+      },
+      "tags": ["github", "repositories", "code", "projects"],
+      "average_response_size": 5000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api.github.com/users/{username}/repos",
+        "http_method": "GET",
+        "query_params": {
+          "type": "{type}",
+          "sort": "{sort}",
+          "direction": "{direction}",
+          "per_page": "{per_page}",
+          "page": "{page}"
+        },
+        "headers": {
+          "Accept": "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28"
+        }
+      }
+    },
+    {
+      "name": "get_repository",
+      "description": "Get detailed information about a specific GitHub repository",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner username or organization name"
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name"
+          }
+        },
+        "required": ["owner", "repo"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "integer"},
+          "node_id": {"type": "string"},
+          "name": {"type": "string"},
+          "full_name": {"type": "string"},
+          "private": {"type": "boolean"},
+          "owner": {
+            "type": "object",
+            "properties": {
+              "login": {"type": "string"},
+              "id": {"type": "integer"},
+              "avatar_url": {"type": "string"},
+              "html_url": {"type": "string"}
+            }
+          },
+          "html_url": {"type": "string"},
+          "description": {"type": "string"},
+          "fork": {"type": "boolean"},
+          "url": {"type": "string"},
+          "created_at": {"type": "string"},
+          "updated_at": {"type": "string"},
+          "pushed_at": {"type": "string"},
+          "git_url": {"type": "string"},
+          "ssh_url": {"type": "string"},
+          "clone_url": {"type": "string"},
+          "svn_url": {"type": "string"},
+          "homepage": {"type": "string"},
+          "size": {"type": "integer"},
+          "stargazers_count": {"type": "integer"},
+          "watchers_count": {"type": "integer"},
+          "language": {"type": "string"},
+          "has_issues": {"type": "boolean"},
+          "has_projects": {"type": "boolean"},
+          "has_wiki": {"type": "boolean"},
+          "has_pages": {"type": "boolean"},
+          "forks_count": {"type": "integer"},
+          "archived": {"type": "boolean"},
+          "disabled": {"type": "boolean"},
+          "open_issues_count": {"type": "integer"},
+          "license": {
+            "type": "object",
+            "properties": {
+              "key": {"type": "string"},
+              "name": {"type": "string"},
+              "spdx_id": {"type": "string"},
+              "url": {"type": "string"}
+            }
+          },
+          "allow_forking": {"type": "boolean"},
+          "is_template": {"type": "boolean"},
+          "topics": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "visibility": {"type": "string"},
+          "forks": {"type": "integer"},
+          "open_issues": {"type": "integer"},
+          "watchers": {"type": "integer"},
+          "default_branch": {"type": "string"},
+          "network_count": {"type": "integer"},
+          "subscribers_count": {"type": "integer"}
+        }
+      },
+      "tags": ["github", "repository", "code", "project", "details"],
+      "average_response_size": 2000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api.github.com/repos/{owner}/{repo}",
+        "http_method": "GET",
+        "headers": {
+          "Accept": "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28"
+        }
+      }
+    },
+    {
+      "name": "search_repositories",
+      "description": "Search for repositories on GitHub",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Search query (e.g., 'machine learning language:python')"
+          },
+          "sort": {
+            "type": "string",
+            "description": "Sort field",
+            "enum": ["stars", "forks", "help-wanted-issues", "updated"],
+            "default": "best-match"
+          },
+          "order": {
+            "type": "string",
+            "description": "Sort order",
+            "enum": ["asc", "desc"],
+            "default": "desc"
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of results per page (max 100)",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of results to fetch",
+            "minimum": 1,
+            "default": 1
+          }
+        },
+        "required": ["q"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "total_count": {"type": "integer"},
+          "incomplete_results": {"type": "boolean"},
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "integer"},
+                "node_id": {"type": "string"},
+                "name": {"type": "string"},
+                "full_name": {"type": "string"},
+                "private": {"type": "boolean"},
+                "owner": {
+                  "type": "object",
+                  "properties": {
+                    "login": {"type": "string"},
+                    "id": {"type": "integer"},
+                    "avatar_url": {"type": "string"},
+                    "html_url": {"type": "string"}
+                  }
+                },
+                "html_url": {"type": "string"},
+                "description": {"type": "string"},
+                "fork": {"type": "boolean"},
+                "url": {"type": "string"},
+                "created_at": {"type": "string"},
+                "updated_at": {"type": "string"},
+                "pushed_at": {"type": "string"},
+                "homepage": {"type": "string"},
+                "size": {"type": "integer"},
+                "stargazers_count": {"type": "integer"},
+                "watchers_count": {"type": "integer"},
+                "language": {"type": "string"},
+                "forks_count": {"type": "integer"},
+                "archived": {"type": "boolean"},
+                "disabled": {"type": "boolean"},
+                "open_issues_count": {"type": "integer"},
+                "license": {
+                  "type": "object",
+                  "properties": {
+                    "key": {"type": "string"},
+                    "name": {"type": "string"},
+                    "spdx_id": {"type": "string"},
+                    "url": {"type": "string"}
+                  }
+                },
+                "topics": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                },
+                "visibility": {"type": "string"},
+                "forks": {"type": "integer"},
+                "open_issues": {"type": "integer"},
+                "watchers": {"type": "integer"},
+                "default_branch": {"type": "string"},
+                "score": {"type": "number"}
+              }
+            }
+          }
+        }
+      },
+      "tags": ["github", "search", "repositories", "discovery"],
+      "average_response_size": 8000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://api.github.com/search/repositories",
+        "http_method": "GET",
+        "query_params": {
+          "q": "{q}",
+          "sort": "{sort}",
+          "order": "{order}",
+          "per_page": "{per_page}",
+          "page": "{page}"
+        },
+        "headers": {
+          "Accept": "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28"
+        }
+      }
+    }
+  ]
+}
+

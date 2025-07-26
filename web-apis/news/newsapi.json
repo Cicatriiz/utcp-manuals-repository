@@ -1,0 +1,283 @@
+{
+  "utcp_version": "1.0.0",
+  "manual_version": "1.0.0",
+  "tools": [
+    {
+      "name": "search_everything",
+      "description": "Search through millions of articles from over 150,000 news sources and blogs",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Keywords or phrases to search for in the article title and body. Supports advanced search with quotes for exact match, + for required words, - for excluded words"
+          },
+          "searchIn": {
+            "type": "string",
+            "description": "The fields to restrict your search to",
+            "enum": ["title", "description", "content"],
+            "default": "title,description,content"
+          },
+          "sources": {
+            "type": "string",
+            "description": "Comma-separated string of identifiers for the news sources or blogs you want headlines from"
+          },
+          "domains": {
+            "type": "string",
+            "description": "Comma-separated string of domains (eg bbc.co.uk, techcrunch.com) to restrict the search to"
+          },
+          "excludeDomains": {
+            "type": "string",
+            "description": "Comma-separated string of domains to remove from the results"
+          },
+          "from": {
+            "type": "string",
+            "description": "Date and optional time for the oldest article allowed (ISO 8601 format, e.g., 2025-07-26 or 2025-07-26T10:30:00)"
+          },
+          "to": {
+            "type": "string",
+            "description": "Date and optional time for the newest article allowed (ISO 8601 format)"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language to search for articles in",
+            "enum": ["ar", "de", "en", "es", "fr", "he", "it", "nl", "no", "pt", "ru", "sv", "ud", "zh"],
+            "default": "en"
+          },
+          "sortBy": {
+            "type": "string",
+            "description": "Sort articles by",
+            "enum": ["relevancy", "popularity", "publishedAt"],
+            "default": "publishedAt"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Number of results to return per page",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 20
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number to retrieve",
+            "minimum": 1,
+            "default": 1
+          }
+        },
+        "required": ["q"]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "status": {"type": "string"},
+          "totalResults": {"type": "integer"},
+          "articles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "id": {"type": "string"},
+                    "name": {"type": "string"}
+                  }
+                },
+                "author": {"type": "string"},
+                "title": {"type": "string"},
+                "description": {"type": "string"},
+                "url": {"type": "string"},
+                "urlToImage": {"type": "string"},
+                "publishedAt": {"type": "string"},
+                "content": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "tags": ["news", "search", "articles", "media", "journalism"],
+      "average_response_size": 15000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://newsapi.org/v2/everything",
+        "http_method": "GET",
+        "query_params": {
+          "q": "{q}",
+          "searchIn": "{searchIn}",
+          "sources": "{sources}",
+          "domains": "{domains}",
+          "excludeDomains": "{excludeDomains}",
+          "from": "{from}",
+          "to": "{to}",
+          "language": "{language}",
+          "sortBy": "{sortBy}",
+          "pageSize": "{pageSize}",
+          "page": "{page}",
+          "apiKey": "{api_key}"
+        },
+        "auth": {
+          "auth_type": "api_key",
+          "api_key": "YOUR_NEWSAPI_KEY",
+          "var_name": "apiKey",
+          "location": "query"
+        }
+      }
+    },
+    {
+      "name": "get_top_headlines",
+      "description": "Get breaking news headlines for countries, categories, and singular publishers",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string",
+            "description": "2-letter ISO 3166-1 country code",
+            "enum": ["ae", "ar", "at", "au", "be", "bg", "br", "ca", "ch", "cn", "co", "cu", "cz", "de", "eg", "fr", "gb", "gr", "hk", "hu", "id", "ie", "il", "in", "it", "jp", "kr", "lt", "lv", "ma", "mx", "my", "ng", "nl", "no", "nz", "ph", "pl", "pt", "ro", "rs", "ru", "sa", "se", "sg", "si", "sk", "th", "tr", "tw", "ua", "us", "ve", "za"]
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of news",
+            "enum": ["business", "entertainment", "general", "health", "science", "sports", "technology"]
+          },
+          "sources": {
+            "type": "string",
+            "description": "Comma-separated string of identifiers for the news sources or blogs you want headlines from"
+          },
+          "q": {
+            "type": "string",
+            "description": "Keywords or phrases to search for in the article title and body"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Number of results to return per page",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 20
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number to retrieve",
+            "minimum": 1,
+            "default": 1
+          }
+        }
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "status": {"type": "string"},
+          "totalResults": {"type": "integer"},
+          "articles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "id": {"type": "string"},
+                    "name": {"type": "string"}
+                  }
+                },
+                "author": {"type": "string"},
+                "title": {"type": "string"},
+                "description": {"type": "string"},
+                "url": {"type": "string"},
+                "urlToImage": {"type": "string"},
+                "publishedAt": {"type": "string"},
+                "content": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "tags": ["news", "headlines", "breaking", "current", "top"],
+      "average_response_size": 12000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://newsapi.org/v2/top-headlines",
+        "http_method": "GET",
+        "query_params": {
+          "country": "{country}",
+          "category": "{category}",
+          "sources": "{sources}",
+          "q": "{q}",
+          "pageSize": "{pageSize}",
+          "page": "{page}",
+          "apiKey": "{api_key}"
+        },
+        "auth": {
+          "auth_type": "api_key",
+          "api_key": "YOUR_NEWSAPI_KEY",
+          "var_name": "apiKey",
+          "location": "query"
+        }
+      }
+    },
+    {
+      "name": "get_sources",
+      "description": "Get information about news sources available for top headlines",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Category of news sources",
+            "enum": ["business", "entertainment", "general", "health", "science", "sports", "technology"]
+          },
+          "language": {
+            "type": "string",
+            "description": "Language of the news sources",
+            "enum": ["ar", "de", "en", "es", "fr", "he", "it", "nl", "no", "pt", "ru", "sv", "ud", "zh"]
+          },
+          "country": {
+            "type": "string",
+            "description": "2-letter ISO 3166-1 country code",
+            "enum": ["ae", "ar", "at", "au", "be", "bg", "br", "ca", "ch", "cn", "co", "cu", "cz", "de", "eg", "fr", "gb", "gr", "hk", "hu", "id", "ie", "il", "in", "it", "jp", "kr", "lt", "lv", "ma", "mx", "my", "ng", "nl", "no", "nz", "ph", "pl", "pt", "ro", "rs", "ru", "sa", "se", "sg", "si", "sk", "th", "tr", "tw", "ua", "us", "ve", "za"]
+          }
+        }
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "status": {"type": "string"},
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "name": {"type": "string"},
+                "description": {"type": "string"},
+                "url": {"type": "string"},
+                "category": {"type": "string"},
+                "language": {"type": "string"},
+                "country": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "tags": ["news", "sources", "publishers", "media"],
+      "average_response_size": 5000,
+      "tool_transport": {
+        "transport_type": "http",
+        "url": "https://newsapi.org/v2/top-headlines/sources",
+        "http_method": "GET",
+        "query_params": {
+          "category": "{category}",
+          "language": "{language}",
+          "country": "{country}",
+          "apiKey": "{api_key}"
+        },
+        "auth": {
+          "auth_type": "api_key",
+          "api_key": "YOUR_NEWSAPI_KEY",
+          "var_name": "apiKey",
+          "location": "query"
+        }
+      }
+    }
+  ]
+}
+
