@@ -1,6 +1,26 @@
 # UTCP Manuals Repository
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A comprehensive collection of Universal Tool Calling Protocol (UTCP) manual JSON files for various useful APIs, services, and tools. These manuals can be directly used with UTCP-compatible clients to interact with popular web services, development tools, data sources, and AI services.
+
+## Table of Contents
+
+- [What is UTCP?](#what-is-utcp)
+- [Repository Structure](#repository-structure)
+- [Available UTCP Manuals](#available-utcp-manuals)
+  - [Web APIs](#web-apis)
+  - [Development Tools](#development-tools)
+  - [Data & Analytics](#data--analytics)
+  - [AI & Machine Learning](#ai--machine-learning)
+- [Usage Examples](#usage-examples)
+- [Authentication Requirements](#authentication-requirements)
+- [Getting Started](#getting-started)
+- [API Key Registration Links](#api-key-registration-links)
+- [Contributing](#contributing)
+- [License](#license)
+- [Disclaimer](#disclaimer)
+- [Support](#support)
 
 ## What is UTCP?
 
